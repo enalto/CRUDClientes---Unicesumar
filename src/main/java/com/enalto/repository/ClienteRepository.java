@@ -12,11 +12,11 @@ public interface ClienteRepository {
 
     public Optional<Cliente> create(Cliente cliente);
 
-    public Optional<Cliente> delete(Cliente cliente);
+    public boolean delete(long id);
 
-    public List<Cliente> findByNome(String nome);
+    public Optional<Cliente> findByNome(String nome);
 
-    public List<Cliente> findByEmail(String email);
+    public Optional<Cliente> findByEmail(String email);
 
-    public Cliente updateById(long ig);
+    public Optional<Cliente> updateById(long ig, Cliente cliente);
 }

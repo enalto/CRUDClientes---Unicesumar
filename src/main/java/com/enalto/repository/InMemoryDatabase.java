@@ -35,12 +35,13 @@ public class InMemoryDatabase {
         return findResult;
     }
 
-    public void add(Cliente cliente) {
+    public Optional<Cliente> create(Cliente cliente) {
         cliente.setId(++nextId);
         clientes.add(cliente);
+        return Optional.of(cliente);
     }
 
-    public void update(Cliente cliente) {
+    public Optional<Cliente> update(Cliente cliente) {
         Optional<Cliente> find = getById(cliente.getId());
 
         find.ifPresent(c -> {
@@ -48,6 +49,7 @@ public class InMemoryDatabase {
             c.setEmail(cliente.getEmail());
             c.setTelefone(cliente.getTelefone());
         });
+        return Optional.of(find.orElse(null));
     }
 
     public boolean delete(long id) {
@@ -76,6 +78,16 @@ public class InMemoryDatabase {
                 .findFirst();
 
         return firstResult;
+    }
+
+    public Optional<Cliente> updateById(long id, Cliente cliente) {
+        Optional<Cliente> find = getById(id);
+        find.ifPresent(c -> {
+            c.setNome(cliente.getNome());
+            c.setEmail(cliente.getEmail());
+            c.setTelefone(cliente.getTelefone());
+        });
+        return Optional.of(find.orElse(null));
     }
 
 }
