@@ -40,10 +40,14 @@ public class ClienteService {
             Optional<Cliente> cliente = database.create(new Cliente(nome, email, telefone));
             logger.info("Cliente cadastrado com sucesso!, Id=" + cliente.get().getId());
         }
+        scanner.close();
         return true;
     }
 
     public boolean alterar() {
+        if (database.getAll().isEmpty())
+            throw new RuntimeException("Lista de clientes está vazia.");
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -74,10 +78,14 @@ public class ClienteService {
                 }
             }
         }
+        scanner.close();
         return true;
     }
 
     public boolean findById() {
+        if (database.getAll().isEmpty())
+            throw new RuntimeException("Lista de clientes está vazia.");
+
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String readString = ValidarInput.validateInput(scanner, "Entre com o ID ou (0) para sair: ",
@@ -92,18 +100,14 @@ public class ClienteService {
                 printCliente(cliente.get());
             }
         }
+        scanner.close();
         return true;
     }
 
-    private static void printCliente(Cliente cliente) {
-        System.out.println("Id: " + cliente.getId());
-        System.out.println("Nome: " + cliente.getNome());
-        System.out.println("Email: " + cliente.getEmail());
-        System.out.println("Telefone: " + cliente.getTelefone());
-        System.out.println("-".repeat(50));
-    }
-
     public boolean findByName() {
+        if (database.getAll().isEmpty())
+            throw new RuntimeException("Lista de clientes está vazia.");
+
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String nome = ValidarInput.validateInput(scanner, "Entre com o nome ou (enter) para sair: ",
@@ -117,10 +121,13 @@ public class ClienteService {
                 clienteList.forEach(ClienteService::printCliente);
             }
         }
+        scanner.close();
         return true;
     }
 
     public boolean delete() {
+        if (database.getAll().isEmpty())
+            throw new RuntimeException("Lista de clientes está vazia.");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String readString = ValidarInput.validateInput(scanner, "Entre com o ID ou (0) para sair: ",
@@ -147,14 +154,20 @@ public class ClienteService {
     }
 
     public boolean listar() {
-        if (database.getAll().stream().count() > 0) {
-            System.out.println("-".repeat(50));
-            database.getAll().forEach(System.out::println);
-            System.out.println("-".repeat(50));
-        } else {
-            logger.info("Lista de clientes está vazia.");
-        }
+        if (database.getAll().isEmpty())
+            throw new RuntimeException("Lista de clientes está vazia.");
+
+        System.out.println("-".repeat(50));
+        database.getAll().forEach(System.out::println);
+        System.out.println("-".repeat(50));
         return true;
     }
 
+    private static void printCliente(Cliente cliente) {
+        System.out.println("Id: " + cliente.getId());
+        System.out.println("Nome: " + cliente.getNome());
+        System.out.println("Email: " + cliente.getEmail());
+        System.out.println("Telefone: " + cliente.getTelefone());
+        System.out.println("-".repeat(50));
+    }
 }

@@ -5,20 +5,22 @@ import com.enalto.domain.Cliente;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class InMemoryDatabase {
 
     private static InMemoryDatabase instance;
     private static List<Cliente> clientes;
+    private static final Supplier<List<Cliente>> supplierArrayList = ArrayList::new;
     private static int nextId;
 
     private InMemoryDatabase() {
-        clientes = new ArrayList<>();
         nextId = 0;
     }
 
     public static InMemoryDatabase getInstance() {
         if (instance == null) {
+            clientes = supplierArrayList.get();
             instance = new InMemoryDatabase();
         }
         return instance;

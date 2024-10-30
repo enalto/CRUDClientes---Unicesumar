@@ -6,6 +6,7 @@ import com.enalto.util.Menu;
 
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 public class Main {
@@ -20,12 +21,16 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final String javaVersion = System.getProperty("java.version");
     private final Map<Map.Entry<Integer, String>, Callable<Boolean>> options = new HashMap<>();
-    private final ClienteService clienteService = new ClienteService();
+    // testando layinitialization com Supplier
+    private static final Supplier<ClienteService> clienteServiceSupplier = ClienteService::new;
+    private static ClienteService clienteService;
+
     private Menu menu;
 
     public static void main(String[] args) throws Exception {
         Main main = new Main();
         main.run();
+
     }
 
 
@@ -66,6 +71,13 @@ public class Main {
         scanner.close();
     }
 
+    public ClienteService getClienteService() {
+        if (clienteService == null) {
+            clienteService = clienteServiceSupplier.get();
+        }
+        return clienteService;
+    }
+
     private void optionsHandler() {
         options.put(Map.entry(1, menu.getItensMenu().get(1)), () -> add());
         options.put(Map.entry(2, menu.getItensMenu().get(2)), () -> edit());
@@ -82,7 +94,7 @@ public class Main {
                 .comOpcao(2, "Alterar Clientes")
                 .comOpcao(3, "Buscar pelo Id")
                 .comOpcao(4, "Buscar pelo Nome")
-                .comOpcao(5, "Listar Clientes")
+                .comOpcao(5, "Listar Clientes ")
                 .comOpcao(6, "Excluir Clientes")
                 .comOpcao(7, "Sair")
                 .build();
@@ -91,27 +103,52 @@ public class Main {
 
 
     private boolean add() {
-        return clienteService.cadastrar();
+        return this.getClienteService().cadastrar();
     }
 
     private boolean edit() {
-        return clienteService.alterar();
+        try {
+            return this.getClienteService().alterar();
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return true;
     }
 
     private boolean list() {
-        return clienteService.listar();
+        try {
+            return this.getClienteService().listar();
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return true;
     }
 
     private boolean findById() {
-        return clienteService.findById();
+        try {
+            return this.getClienteService().findById();
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return true;
     }
 
     private boolean findByName() {
-        return clienteService.findByName();
+        try {
+            return this.getClienteService().findByName();
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return true;
     }
 
     private boolean remove() {
-        return clienteService.delete();
+        try {
+            return this.getClienteService().delete();
+        } catch (RuntimeException e) {
+            logger.info(e.getMessage());
+        }
+        return true;
     }
 
     private void printLogo() {
