@@ -40,7 +40,6 @@ public class ClienteService {
             Optional<Cliente> cliente = database.create(new Cliente(nome, email, telefone));
             logger.info("Cliente cadastrado com sucesso!, Id=" + cliente.get().getId());
         }
-        scanner.close();
         return true;
     }
 
@@ -78,7 +77,6 @@ public class ClienteService {
                 }
             }
         }
-        scanner.close();
         return true;
     }
 
@@ -100,7 +98,6 @@ public class ClienteService {
                 printCliente(cliente.get());
             }
         }
-        scanner.close();
         return true;
     }
 
@@ -121,7 +118,6 @@ public class ClienteService {
                 clienteList.forEach(ClienteService::printCliente);
             }
         }
-        scanner.close();
         return true;
     }
 

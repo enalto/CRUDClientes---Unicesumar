@@ -30,7 +30,6 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Main main = new Main();
         main.run();
-
     }
 
 
@@ -46,6 +45,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int opcao;
         do {
+            clearConsole();
+
             System.out.println("Escolha uma opção.");
             menu.showMenu();
             try {
@@ -103,10 +104,13 @@ public class Main {
 
 
     private boolean add() {
+        clearConsole();
         return this.getClienteService().cadastrar();
     }
 
     private boolean edit() {
+        clearConsole();
+
         try {
             return this.getClienteService().alterar();
         } catch (RuntimeException e) {
@@ -116,6 +120,8 @@ public class Main {
     }
 
     private boolean list() {
+        clearConsole();
+
         try {
             return this.getClienteService().listar();
         } catch (RuntimeException e) {
@@ -125,6 +131,8 @@ public class Main {
     }
 
     private boolean findById() {
+        clearConsole();
+
         try {
             return this.getClienteService().findById();
         } catch (RuntimeException e) {
@@ -134,6 +142,8 @@ public class Main {
     }
 
     private boolean findByName() {
+        clearConsole();
+
         try {
             return this.getClienteService().findByName();
         } catch (RuntimeException e) {
@@ -143,6 +153,8 @@ public class Main {
     }
 
     private boolean remove() {
+        clearConsole();
+
         try {
             return this.getClienteService().delete();
         } catch (RuntimeException e) {
@@ -167,6 +179,19 @@ public class Main {
                                `---'                                        \s
                 """;
         logger.info(thin);
+    }
+
+    public final static void clearConsole() {
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.startsWith("Windows")) {
+                Runtime.getRuntime().exec("cls");
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (final Exception e) {
+            //  Handle any exceptions.
+        }
     }
 
 }
