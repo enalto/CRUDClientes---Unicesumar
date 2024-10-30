@@ -1,5 +1,6 @@
 package com.enalto;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +18,12 @@ public class Menu {
 
     public void showMenu() {
         this.itensMenu.forEach((key, value) -> {
-            System.out.println(key + ": " + value);
+            System.out.println(key + "- " + value);
         });
+    }
+
+    public Map<Integer, String> getItensMenu() {
+        return Collections.unmodifiableMap(itensMenu);
     }
 
 
