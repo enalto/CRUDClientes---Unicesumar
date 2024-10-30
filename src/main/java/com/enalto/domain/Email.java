@@ -1,4 +1,4 @@
-package com.enalto;
+package com.enalto.domain;
 
 import java.util.regex.Pattern;
 

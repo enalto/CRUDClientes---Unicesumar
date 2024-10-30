@@ -1,12 +1,10 @@
 package com.enalto;
 
-import com.enalto.domain.Cliente;
 import com.enalto.repository.InMemoryDatabase;
+import com.enalto.service.ClienteService;
+import com.enalto.util.Menu;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
@@ -22,7 +20,7 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final String javaVersion = System.getProperty("java.version");
     private final Map<Map.Entry<Integer, String>, Callable<Boolean>> options = new HashMap<>();
-    private final InMemoryDatabase database = InMemoryDatabase.getInstance();
+    private final ClienteService clienteService = new ClienteService();
     private Menu menu;
 
     public static void main(String[] args) throws Exception {
@@ -36,8 +34,9 @@ public class Main {
         InMemoryDatabase db = InMemoryDatabase.getInstance();
         this.menu = createMenu();
         optionsHandler();
-        printLogo();
-
+        if (Integer.parseInt(javaVersion) >= 15) {
+            printLogo();
+        }
 
         Scanner scanner = new Scanner(System.in);
         int opcao;
@@ -68,17 +67,12 @@ public class Main {
     }
 
     private void optionsHandler() {
-        options.put(Map.entry(1, menu.getItensMenu().get(1)), () -> {
-            System.out.println("Cadastrar cliente");
-            return true;
-        });
-
-        options.put(Map.entry(1, menu.getItensMenu().get(1)), () -> cadastrar());
-        options.put(Map.entry(2, menu.getItensMenu().get(2)), () -> true);
-        options.put(Map.entry(3, menu.getItensMenu().get(3)), () -> true);
-        options.put(Map.entry(4, menu.getItensMenu().get(4)), () -> true);
-        options.put(Map.entry(5, menu.getItensMenu().get(5)), () -> listar());
-        options.put(Map.entry(6, menu.getItensMenu().get(6)), () -> true);
+        options.put(Map.entry(1, menu.getItensMenu().get(1)), () -> add());
+        options.put(Map.entry(2, menu.getItensMenu().get(2)), () -> edit());
+        options.put(Map.entry(3, menu.getItensMenu().get(3)), () -> findById());
+        options.put(Map.entry(4, menu.getItensMenu().get(4)), () -> findByName());
+        options.put(Map.entry(5, menu.getItensMenu().get(5)), () -> list());
+        options.put(Map.entry(6, menu.getItensMenu().get(6)), () -> remove());
         options.put(Map.entry(7, menu.getItensMenu().get(7)), () -> false);
     }
 
@@ -95,34 +89,30 @@ public class Main {
         return builder;
     }
 
-    public boolean cadastrar() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Nome: ");
-        String nome = scanner.nextLine();
-        Email email = null;
 
-        do {
-            System.out.print("Email: ");
-            String strEmail = scanner.nextLine();
-            email = new Email(strEmail);
-            if (!email.isValid()) {
-                System.out.println("Endereço de e-mail inválido. Por favor, tente novamente.");
-            }
-        } while (!email.isValid());
-
-        System.out.print("Telefone: ");
-        String telefone = scanner.nextLine();
-        database.create(new Cliente(nome, email, telefone));
-        scanner.close();
-        return true;
+    private boolean add() {
+        return clienteService.cadastrar();
     }
 
-
-    private boolean listar() {
-        database.getAll().forEach(System.out::println);
-        return true;
+    private boolean edit() {
+        return clienteService.alterar();
     }
 
+    private boolean list() {
+        return clienteService.listar();
+    }
+
+    private boolean findById() {
+        return clienteService.findById();
+    }
+
+    private boolean findByName() {
+        return clienteService.findByName();
+    }
+
+    private boolean remove() {
+        return clienteService.delete();
+    }
 
     private void printLogo() {
         String thin = """

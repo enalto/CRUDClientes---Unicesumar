@@ -40,7 +40,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public Optional<Cliente> findByNome(String nome) {
+    public List<Cliente> findByNome(String nome) {
         return database.getByName(nome);
     }
 

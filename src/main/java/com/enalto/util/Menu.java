@@ -1,4 +1,4 @@
-package com.enalto;
+package com.enalto.util;
 
 import java.util.Collections;
 import java.util.HashMap;

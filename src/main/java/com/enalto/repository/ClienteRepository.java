@@ -14,7 +14,7 @@ public interface ClienteRepository {
 
     public boolean delete(long id);
 
-    public Optional<Cliente> findByNome(String nome);
+    public List<Cliente> findByNome(String nome);
 
     public Optional<Cliente> findByEmail(String email);
 

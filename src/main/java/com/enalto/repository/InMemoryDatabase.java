@@ -41,20 +41,7 @@ public class InMemoryDatabase {
         return Optional.of(cliente);
     }
 
-    public Optional<Cliente> update(Cliente cliente) {
-        Optional<Cliente> find = getById(cliente.getId());
-
-        find.ifPresent(c -> {
-            c.setNome(cliente.getNome());
-            c.setEmail(cliente.getEmail());
-            c.setTelefone(cliente.getTelefone());
-        });
-        return Optional.of(find.orElse(null));
-    }
-
     public boolean delete(long id) {
-        //clientes.removeIf(c -> c.getId() == id);
-
         Optional<Cliente> find = getById(id);
 
         if (find.isPresent()) {
@@ -72,12 +59,11 @@ public class InMemoryDatabase {
         return firstResult;
     }
 
-    public Optional<Cliente> getByName(String name) {
-        Optional<Cliente> firstResult = clientes.stream()
-                .filter(c -> c.getNome().equals(name))
-                .findFirst();
-
-        return firstResult;
+    public List<Cliente> getByName(String name) {
+        List<Cliente> list = clientes.stream()
+                .filter(c -> c.getNome().startsWith(name))
+                .toList();
+        return list;
     }
 
     public Optional<Cliente> updateById(long id, Cliente cliente) {
@@ -90,4 +76,7 @@ public class InMemoryDatabase {
         return Optional.of(find.orElse(null));
     }
 
+    public int getNextId() {
+        return nextId;
+    }
 }
