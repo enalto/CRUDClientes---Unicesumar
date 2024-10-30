@@ -26,4 +26,11 @@ public class Email {
         }
         return VALID_EMAIL_ADDRESS_REGEX.matcher(this.email).matches();
     }
+
+    @Override
+    public String toString() {
+        return "Email{" +
+                "email='" + email + '\'' +
+                '}';
+    }
 }

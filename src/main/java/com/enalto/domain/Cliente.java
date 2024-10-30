@@ -1,17 +1,17 @@
 package com.enalto.domain;
 
-import java.util.UUID;
+import com.enalto.Email;
 
 public class Cliente {
     private long id;
     private String nome;
-    private String email;
+    private Email email;
     private String telefone;
 
     public Cliente() {
     }
 
-    public Cliente(String nome, String email, String telefone) {
+    public Cliente(String nome, Email email, String telefone) {
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
@@ -29,7 +29,7 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 
@@ -41,7 +41,7 @@ public class Cliente {
         return nome;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
@@ -54,7 +54,7 @@ public class Cliente {
         return "Cliente{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
+                ", email=" + email +
                 ", telefone='" + telefone + '\'' +
                 '}';
     }

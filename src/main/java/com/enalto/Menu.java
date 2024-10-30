@@ -6,14 +6,10 @@ import java.util.Map;
 
 public class Menu {
 
-    private final Map<Integer, String> itensMenu = new HashMap<Integer, String>();
+    private final Map<Integer, String> itensMenu;
 
-    public Menu() {
-    }
-
-    public Menu addItem(Integer key, String value) {
-        itensMenu.put(key, value);
-        return this;
+    public Menu(Builder builder) {
+        this.itensMenu = new HashMap<>(builder.itensMenu);
     }
 
     public void showMenu() {
@@ -26,5 +22,17 @@ public class Menu {
         return Collections.unmodifiableMap(itensMenu);
     }
 
+    public static class Builder {
 
+        private Map<Integer, String> itensMenu = new HashMap<>();
+
+        public Builder comOpcao(Integer key, String value) {
+            itensMenu.put(key, value);
+            return this;
+        }
+
+        public Menu build() {
+            return new Menu(this);
+        }
+    }
 }
